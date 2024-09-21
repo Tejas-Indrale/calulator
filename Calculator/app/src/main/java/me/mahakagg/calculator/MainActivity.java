@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private static int MAX_CHARACTERS = 10;
 
     private enum operator {
-        ADD, SUB, MUL, DIV, MOD, ROOT, POW, NULL
+        ADD, SUB, MUL, DIV, MOD, ROOT, POW,  
+ INVERSE, SQUARE, ABS, NULL
     }
 
     @Override
@@ -187,6 +188,19 @@ public class MainActivity extends AppCompatActivity {
                     operation_string = operator.ROOT.name();
                     mOperatorTextView.setText("√");
                     break;
+                //code added for added operators
+                case R.id.button_inverse:
+                    operation_string = operator.INVERSE.name();
+                    mOperatorTextView.setText("1/x");
+                    break;
+                case R.id.button_square:
+                    operation_string = operator.SQUARE.name();
+                    mOperatorTextView.setText("x²");
+                    break;
+                case R.id.button_abs:
+                    operation_string = operator.ABS.name();
+                    mOperatorTextView.setText("abs");
+                    break;
                 default:
                     operation_string = operator.NULL.name();
                     break;
@@ -247,6 +261,28 @@ public class MainActivity extends AppCompatActivity {
                     mFinalResultTextView.setText(String.valueOf(mCalculator.power(number_one, number_two)));
                     operation = mInputValue1TextView.getText().toString() + getString(R.string.button_pow) + mInputValue2TextView.getText().toString();
                     break;
+
+                //for new operators
+                 case INVERSE:
+            try {
+                mFinalResultTextView.setText(String.valueOf(mCalculator.multiplicativeInverse(number_one)));
+                operation = "1/" + mInputValue1TextView.getText().toString();
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show();
+                operation = "";
+                clearAll();
+            }
+            break;  
+
+        case SQUARE:
+            mFinalResultTextView.setText(String.valueOf(mCalculator.square(number_one)));
+            operation = mInputValue1TextView.getText().toString() + "²";
+            break;
+        case ABS:
+            mFinalResultTextView.setText(String.valueOf(mCalculator.absoluteValue(number_one)));
+            operation = "| " + mInputValue1TextView.getText().toString() + " |";
+            break;
+
                 case NULL:
                     mFinalResultTextView.setText(getString(R.string.error));
                     operation = "";
